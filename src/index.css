@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+}
+
+.main {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* Send the video to the background */
+}
+
+.form {
+  width: 25rem;
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Glass effect */
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+}
+
+.btn {
+  width: 100%;
+  background-color: #ed672970;
+  font-size: 1rem;
+  border: 2px solid #fc5204;
+}
+
+.input {
+  width: 100%;
+  padding: 5px;
+  border: 3px solid #f6f6f6;
+  color: #434343;
+}
+
+.header {
+  margin-bottom: 1rem;
+  font-family: 'Roboto';
+  /* opacity: 0.7; */
+}
+
+@media (max-width: 500px) {
+  .form {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    overflow: hidden;
+  }
+}
