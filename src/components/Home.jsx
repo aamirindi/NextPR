@@ -15,7 +15,7 @@ const Home = () => {
       <Navbar userId={userId} />
       {/* <WorkoutLog userId={userId} /> */}
 
-      <p>
+      <p className="">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam luctus
         viverra enim sit amet scelerisque. Curabitur viverra a est a finibus. Ut
         in dolor erat. Nulla sagittis sem est, nec tincidunt metus varius at.

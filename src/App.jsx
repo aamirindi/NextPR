@@ -10,6 +10,7 @@ import { auth } from "./firebase-config";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import Home from "./components/Home";
+import Profile from "./components/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 
 const App = () => {
@@ -26,7 +27,6 @@ const App = () => {
   }, []);
 
   if (loading) {
-    // Updated loading screen for better UX
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
         <p className="text-lg text-gray-500">Loading...</p>
@@ -49,7 +49,15 @@ const App = () => {
           path="/home"
           element={
             <ProtectedRoute user={user}>
-              <Home />
+              <Home user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute user={user}>
+              <Profile user={user} />
             </ProtectedRoute>
           }
         />

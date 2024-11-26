@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 
 const Navbar = ({ userId }) => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const sidebarRef = useRef(null);
 
   const handleSignOut = async () => {
     try {
@@ -15,6 +19,28 @@ const Navbar = ({ userId }) => {
       console.error("Error signing out:", error);
     }
   };
+
+  const handleNavigateToProfile = () => {
+    navigate("/profile", { state: { userId } });
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isSidebarOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target)
+      ) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSidebarOpen]);
 
   return (
     <div className="relative">
@@ -34,41 +60,50 @@ const Navbar = ({ userId }) => {
       {/* Sidebar */}
       <div>
         {/* For larger screens */}
-        <div className="hidden lg:flex lg:text-center lg:justify-between p-3 fixed left-0 top-0 h-full w-40 bg-[#111214] text-center text-white flex-col">
-          <div>
-            <p className="mb-4">Workout Log</p>
-            <p>Profile</p>
+        <div className="hidden lg:flex lg:text-center lg:justify-between p-3 fixed left-0 top-0 h-full w-fit bg-[#111214] text-center text-white flex-col">
+          <div className="flex flex-col gap-4">
+            <div
+              className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-black transition-all duration-300 ease-in-out"
+              onClick={handleNavigateToProfile} // Navigate to profile
+            >
+              <AccountCircleOutlinedIcon />
+            </div>
+            <div className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-black transition-all duration-300 ease-in-out">
+              <FitnessCenterIcon />
+            </div>
           </div>
-          <button
+          <div
             onClick={handleSignOut}
-            className="btn p-2 rounded-lg transition-transform transform hover:scale-105 hover:bg-[#a18483b6] hover:text-white"
+            className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-red-500 transition-all duration-300 ease-in-out"
           >
-            Sign Out
-          </button>
+            <ExitToAppOutlinedIcon />
+          </div>
         </div>
 
         {/* For smaller screens */}
         <div
-          className={`lg:hidden fixed top-0 left-0 h-full w-40 bg-[#111214] flex  flex-col justify-between text-white p-4 transition-transform transform ${
+          ref={sidebarRef}
+          className={`lg:hidden fixed top-0 left-0 h-full w-fit bg-[#111214] flex flex-col justify-between text-white p-4 transition-transform transform ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div>
-            <p className="mb-4">Workout Log</p>
-            <p>Profile</p>
+          <div className="flex flex-col gap-4">
+            <div
+              className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-black transition-all duration-300 ease-in-out"
+              onClick={handleNavigateToProfile} // Navigate to profile
+            >
+              <AccountCircleOutlinedIcon />
+            </div>
+            <div className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-black transition-all duration-300 ease-in-out">
+              <FitnessCenterIcon />
+            </div>
           </div>
-          <button
+          <div
             onClick={handleSignOut}
-            className="btn p-2 rounded-lg transition-transform transform hover:scale-105 hover:bg-[#a18483b6] hover:text-white"
+            className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-red-500 transition-all duration-300 ease-in-out"
           >
-            Sign Out
-          </button>
-          <button
-            onClick={() => setIsSidebarOpen(false)}
-            className="absolute top-2 right-2 text-white"
-          >
-            X
-          </button>
+            <ExitToAppOutlinedIcon />
+          </div>
         </div>
       </div>
     </div>
