@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage"; // Import Firebase Storage
 
 // Firebase configuration
 const firebaseConfig = {
@@ -13,7 +14,8 @@ const firebaseConfig = {
   measurementId: "G-RMBFDZZHYX"
 };
 
-let auth, db;
+
+let auth, db, storage;
 
 try {
   // Initialize Firebase
@@ -29,9 +31,12 @@ try {
 
   // Initialize Firestore
   db = getFirestore(app);
+
+  // Initialize Firebase Storage
+  storage = getStorage(app); // Add Storage initialization
 } catch (error) {
   console.error("Firebase initialization error:", error);
 }
 
 // Export Firebase utilities
-export { auth, db };
+export { auth, db, storage }; // Export storage

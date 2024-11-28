@@ -43,9 +43,9 @@ const Navbar = ({ userId }) => {
   }, [isSidebarOpen]);
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       {/* Navbar */}
-      <div className="navbar bg-[#d5d5d5] flex justify-between shadow-md w-full p-3">
+      <div className="navbar flex justify-between w-full p-3">
         <div
           className="menu-icon lg:hidden cursor-pointer"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -54,7 +54,7 @@ const Navbar = ({ userId }) => {
           <div className="w-6 h-0.5 bg-black mb-1"></div>
           <div className="w-6 h-0.5 bg-black"></div>
         </div>
-        <div className="logo lg:ml-auto">logo</div>
+        <div className="logo lg:ml-auto text-white">logo</div>
       </div>
 
       {/* Sidebar */}

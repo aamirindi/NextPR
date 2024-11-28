@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth, db } from "../firebase-config";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
 import VisibilityOffTwoToneIcon from "@mui/icons-material/VisibilityOffTwoTone";
+import { doc, setDoc } from "firebase/firestore";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +21,6 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
     setError(null);
 
     if (password !== confirmPassword) {
@@ -29,8 +29,19 @@ const SignUp = () => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        createdAt: new Date(),
+      });
+
+      navigate("/home");
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
         setError(
@@ -127,10 +138,7 @@ const SignUp = () => {
 
         <p className="text-zinc-700 mb-3 text-sm">
           Already have an account?{" "}
-          <Link
-            to="/"
-            className="text-zinc-950 hover:underline font-semibold"
-          >
+          <Link to="/" className="text-zinc-950 hover:underline font-semibold">
             Sign In
           </Link>
         </p>
