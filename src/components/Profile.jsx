@@ -91,9 +91,9 @@ const Profile = ({ user }) => {
   };
 
   return (
-    <>
+    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 min-h-screen text-white">
       <Navbar />
-      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-md text-[#3c2de2] profile-form">
+      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-md text-white profile-form">
         {/* Display Current Info */}
         <div className="relative profile-container flex justify-between">
           <div className="mb-4 relative profile-img-container">
@@ -250,7 +250,7 @@ const Profile = ({ user }) => {
           </DialogActions>
         </Dialog>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -59,7 +59,7 @@ body {
 }
 
 .profile-form {
-  background: #8b81fa38;
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(5px); /* Glass effect */
   border-radius: 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
@@ -99,6 +99,10 @@ body {
   }
 }
 
+.workout-form {
+  margin: 1rem 1rem 1rem 3rem;
+}
+
 @media (max-width: 500px) {
   .form {
     width: 100%;
@@ -122,4 +126,8 @@ body {
       justify-content: center;
     }
   }
+  .workout-form{
+    margin: 0;
+  }
 }
+

@@ -12,6 +12,7 @@ import SignIn from "./components/SignIn";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./ProtectedRoute";
+import Fitness from "./components/Fitness";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -22,18 +23,14 @@ const App = () => {
       setUser(currentUser);
       setTimeout(() => setLoading(false), 4000);
     });
-  
+
     return () => unsubscribe();
   }, []);
-  
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#8c81fa]">
-        <img
-          src="/assets/loading4.gif"
-          alt="loading"
-          width={500}
-        />
+        <img src="/assets/loading4.gif" alt="loading" width={500} />
       </div>
     );
   }
@@ -62,6 +59,14 @@ const App = () => {
           element={
             <ProtectedRoute user={user}>
               <Profile user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/fitness"
+          element={
+            <ProtectedRoute user={user}>
+              <Fitness user={user} />
             </ProtectedRoute>
           }
         />

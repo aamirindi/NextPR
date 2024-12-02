@@ -28,6 +28,9 @@ const Navbar = ({ userId }) => {
   const handleNavigateToHome = () => {
     navigate("/home", { state: { userId } });
   };
+  const handleNavigateToFitness = () => {
+    navigate("/fitness", { state: { userId } });
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -52,7 +55,7 @@ const Navbar = ({ userId }) => {
   return (
     <div className="relative z-10">
       {/* Navbar */}
-      <div className="flex justify-between w-full p-3 bg-[#8c81fa]">
+      <div className="flex justify-between w-full p-3 navbar">
         <div
           className="menu-icon lg:hidden cursor-pointer"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -71,7 +74,9 @@ const Navbar = ({ userId }) => {
           <div className="flex flex-col gap-4">
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
-                isActive("/home") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+                isActive("/home")
+                  ? "bg-[#8c81fa] text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToHome}
             >
@@ -79,7 +84,9 @@ const Navbar = ({ userId }) => {
             </div>
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
-                isActive("/profile") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+                isActive("/profile")
+                  ? "bg-[#8c81fa] text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToProfile}
             >
@@ -87,8 +94,11 @@ const Navbar = ({ userId }) => {
             </div>
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
-                isActive("/fitness") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+                isActive("/fitness")
+                  ? "bg-[#8c81fa] text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
+              onClick={handleNavigateToFitness}
             >
               <FitnessCenterIcon />
             </div>
@@ -111,7 +121,9 @@ const Navbar = ({ userId }) => {
           <div className="flex flex-col gap-4">
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
-                isActive("/home") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+                isActive("/home")
+                  ? "bg-[#8c81fa] text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToHome}
             >
@@ -119,7 +131,9 @@ const Navbar = ({ userId }) => {
             </div>
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
-                isActive("/profile") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+                isActive("/profile")
+                  ? "bg-[#8c81fa] text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToProfile}
             >
@@ -127,8 +141,11 @@ const Navbar = ({ userId }) => {
             </div>
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
-                isActive("/fitness") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+                isActive("/fitness")
+                  ? "bg-[#8c81fa] text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
+              onClick={handleNavigateToFitness}
             >
               <FitnessCenterIcon />
             </div>
