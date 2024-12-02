@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase-config";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 
 const Navbar = ({ userId }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
 
@@ -22,6 +24,9 @@ const Navbar = ({ userId }) => {
 
   const handleNavigateToProfile = () => {
     navigate("/profile", { state: { userId } });
+  };
+  const handleNavigateToHome = () => {
+    navigate("/home", { state: { userId } });
   };
 
   useEffect(() => {
@@ -42,10 +47,12 @@ const Navbar = ({ userId }) => {
     };
   }, [isSidebarOpen]);
 
+  const isActive = (path) => location.pathname === path;
+
   return (
     <div className="relative z-10">
       {/* Navbar */}
-      <div className="navbar flex justify-between w-full p-3">
+      <div className="flex justify-between w-full p-3 bg-[#8c81fa]">
         <div
           className="menu-icon lg:hidden cursor-pointer"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -54,7 +61,7 @@ const Navbar = ({ userId }) => {
           <div className="w-6 h-0.5 bg-black mb-1"></div>
           <div className="w-6 h-0.5 bg-black"></div>
         </div>
-        <div className="logo lg:ml-auto text-white">logo</div>
+        <div className="lg:ml-auto text-black">logo</div>
       </div>
 
       {/* Sidebar */}
@@ -63,12 +70,26 @@ const Navbar = ({ userId }) => {
         <div className="hidden lg:flex lg:text-center lg:justify-between p-3 fixed left-0 top-0 h-full w-fit bg-[#111214] text-center text-white flex-col">
           <div className="flex flex-col gap-4">
             <div
-              className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-black transition-all duration-300 ease-in-out"
-              onClick={handleNavigateToProfile} // Navigate to profile
+              className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
+                isActive("/home") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+              }`}
+              onClick={handleNavigateToHome}
+            >
+              <HomeOutlinedIcon />
+            </div>
+            <div
+              className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
+                isActive("/profile") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+              }`}
+              onClick={handleNavigateToProfile}
             >
               <AccountCircleOutlinedIcon />
             </div>
-            <div className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-black transition-all duration-300 ease-in-out">
+            <div
+              className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
+                isActive("/fitness") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+              }`}
+            >
               <FitnessCenterIcon />
             </div>
           </div>
@@ -89,12 +110,26 @@ const Navbar = ({ userId }) => {
         >
           <div className="flex flex-col gap-4">
             <div
-              className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-black transition-all duration-300 ease-in-out"
-              onClick={handleNavigateToProfile} // Navigate to profile
+              className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
+                isActive("/home") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+              }`}
+              onClick={handleNavigateToHome}
+            >
+              <HomeOutlinedIcon />
+            </div>
+            <div
+              className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
+                isActive("/profile") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+              }`}
+              onClick={handleNavigateToProfile}
             >
               <AccountCircleOutlinedIcon />
             </div>
-            <div className="cursor-pointer p-2 rounded-md hover:bg-white hover:text-black transition-all duration-300 ease-in-out">
+            <div
+              className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
+                isActive("/fitness") ? "bg-[#8c81fa] text-black" : "hover:bg-white hover:text-black"
+              }`}
+            >
               <FitnessCenterIcon />
             </div>
           </div>

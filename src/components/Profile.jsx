@@ -93,173 +93,162 @@ const Profile = ({ user }) => {
   return (
     <>
       <Navbar />
-      {/* Profile Page Background */}
-      <div
-        className="profile-main"
-        style={{
-          backgroundImage: "url('/assets/profile-bg8.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          width: "100%",
-          height: "100vh",
-        }}
-      >
-        <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-md bg-[#f3f3f5] shadow-md profile-form">
-          {/* Display Current Info */}
-          <div className="relative profile-container flex justify-between">
-            <div className="mb-4 relative profile-img-container">
-              <img
-                src={formData.imgUrl || "https://via.placeholder.com/150"}
-                alt="Profile"
-                className="rounded-full"
-                width="150"
-              />
-            </div>
-            <div className="flex gap-3 flex-col mb-5 text-slate-300 profile-text items-end">
-              <p className="mb-2">
-                <strong className="text-black">Name:</strong> {formData.name}
-              </p>
-              <p className="mb-2">
-                <strong className="text-black">Phone:</strong> {formData.phone}
-              </p>
-              <p className="mb-2">
-                <strong className="text-black">Gender:</strong>{" "}
-                {formData.gender}
-              </p>
-              <p className="mb-2">
-                <strong className="text-black">DOB:</strong> {formData.dob}
-              </p>
-            </div>
+      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-md text-[#3c2de2] profile-form">
+        {/* Display Current Info */}
+        <div className="relative profile-container flex justify-between">
+          <div className="mb-4 relative profile-img-container">
+            <img
+              src={formData.imgUrl || "https://via.placeholder.com/150"}
+              alt="Profile"
+              className="rounded-full"
+              width="150"
+            />
           </div>
-
-          {/* Edit and Delete Buttons */}
-          <div className="flex justify-center gap-3 mt-5 profile-button">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setIsEditModalOpen(true)}
-            >
-              Edit Profile
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => setIsDeleteModalOpen(true)}
-            >
-              Delete Profile
-            </Button>
+          <div className="flex gap-3 flex-col mb-5 profile-text items-end">
+            <p className="mb-2">
+              <strong className="text-black">Name:</strong> {formData.name}
+            </p>
+            <p className="mb-2">
+              <strong className="text-black">Phone:</strong> {formData.phone}
+            </p>
+            <p className="mb-2">
+              <strong className="text-black">Gender:</strong> {formData.gender}
+            </p>
+            <p className="mb-2">
+              <strong className="text-black">DOB:</strong> {formData.dob}
+            </p>
           </div>
-
-          {/* Modal for Editing Profile */}
-          <Dialog
-            open={isEditModalOpen}
-            onClose={() => setIsEditModalOpen(false)}
-            fullWidth
-            maxWidth="sm"
-          >
-            <DialogTitle>Edit Profile</DialogTitle>
-            <DialogContent>
-              <TextField
-                fullWidth
-                label="Name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                margin="normal"
-              />
-              <TextField
-                fullWidth
-                label="Phone Number"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                margin="normal"
-              />
-              <TextField
-                fullWidth
-                label="Image URL"
-                name="imgUrl"
-                value={formData.imgUrl}
-                onChange={handleChange}
-                margin="normal"
-              />
-              <TextField
-                fullWidth
-                select
-                label="Gender"
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                margin="normal"
-              >
-                <MenuItem value="Male">Male</MenuItem>
-                <MenuItem value="Female">Female</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
-              </TextField>
-              <TextField
-                fullWidth
-                label="Date of Birth"
-                name="dob"
-                type="date"
-                value={formData.dob}
-                onChange={handleChange}
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => setIsEditModalOpen(false)}
-                color="secondary"
-                variant="outlined"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleUpdate}
-                color="primary"
-                variant="contained"
-              >
-                Update Profile
-              </Button>
-            </DialogActions>
-          </Dialog>
-
-          {/* Modal for Confirming Account Deletion */}
-          <Dialog
-            open={isDeleteModalOpen}
-            onClose={() => setIsDeleteModalOpen(false)}
-            fullWidth
-            maxWidth="sm"
-          >
-            <DialogTitle>Confirm Account Deletion</DialogTitle>
-            <DialogContent>
-              <p>
-                Are you sure you want to delete your account? This action is
-                irreversible.
-              </p>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => setIsDeleteModalOpen(false)}
-                color="secondary"
-                variant="outlined"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleDeleteAccount}
-                color="error"
-                variant="contained"
-              >
-                Delete Account
-              </Button>
-            </DialogActions>
-          </Dialog>
         </div>
+
+        {/* Edit and Delete Buttons */}
+        <div className="flex justify-center gap-3 mt-5 profile-button">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setIsEditModalOpen(true)}
+            className="edit-btn"
+          >
+            Edit Profile
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => setIsDeleteModalOpen(true)}
+          >
+            Delete Profile
+          </Button>
+        </div>
+
+        {/* Modal for Editing Profile */}
+        <Dialog
+          open={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          fullWidth
+          maxWidth="sm"
+          sx={{
+            "& .MuiPaper-root": {
+              padding: "20px",
+              backgroundColor: "#",
+            },
+          }}
+        >
+          <DialogTitle>Edit Profile</DialogTitle>
+          <DialogContent>
+            <TextField
+              fullWidth
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Phone Number"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Image URL"
+              name="imgUrl"
+              value={formData.imgUrl}
+              onChange={handleChange}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              select
+              label="Gender"
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              margin="normal"
+            >
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </TextField>
+            <TextField
+              fullWidth
+              label="Date of Birth"
+              name="dob"
+              type="date"
+              value={formData.dob}
+              onChange={handleChange}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setIsEditModalOpen(false)}
+              color="secondary"
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleUpdate} color="primary" variant="contained">
+              Update Profile
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Modal for Confirming Account Deletion */}
+        <Dialog
+          open={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          fullWidth
+          maxWidth="sm"
+        >
+          <DialogTitle>Confirm Account Deletion</DialogTitle>
+          <DialogContent>
+            <p>
+              Are you sure you want to delete your account? This action is
+              irreversible.
+            </p>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setIsDeleteModalOpen(false)}
+              color="secondary"
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteAccount}
+              color="error"
+              variant="contained"
+            >
+              Delete Account
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </>
   );

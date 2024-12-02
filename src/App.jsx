@@ -20,16 +20,20 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
+      setTimeout(() => setLoading(false), 4000);
     });
-
+  
     return () => unsubscribe();
   }, []);
-
+  
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <p className="text-lg text-gray-500">Loading...</p>
+      <div className="flex items-center justify-center h-screen bg-[#8c81fa]">
+        <img
+          src="/assets/loading4.gif"
+          alt="loading"
+          width={500}
+        />
       </div>
     );
   }

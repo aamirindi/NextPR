@@ -7,7 +7,9 @@ const Home = () => {
   const userId = auth.currentUser?.uid;
 
   if (!userId) {
-    return <p>Loading...</p>;
+    return <p>
+      <img src="/assests/loading.gif" alt="loading" width={100} height={100} />
+    </p>;
   }
 
   return (
