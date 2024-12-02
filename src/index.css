@@ -59,10 +59,6 @@ body {
 }
 
 .profile-form {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px); /* Glass effect */
-  border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   padding: 2rem;
   margin: 10rem auto;
   text-align: right;
@@ -81,6 +77,11 @@ body {
     background-color: red;
   }
 }
+
+.dialog-content {
+  color: white !important;
+}
+
 
 @keyframes animate {
   0% {

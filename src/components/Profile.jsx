@@ -93,7 +93,7 @@ const Profile = ({ user }) => {
   return (
     <div className="bg-gradient-to-r from-purple-600 to-indigo-600 min-h-screen text-white">
       <Navbar />
-      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-md text-white profile-form">
+      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-2xl text-white profile-form bg-gray-900">
         {/* Display Current Info */}
         <div className="relative profile-container flex justify-between">
           <div className="mb-4 relative profile-img-container">
@@ -106,16 +106,18 @@ const Profile = ({ user }) => {
           </div>
           <div className="flex gap-3 flex-col mb-5 profile-text items-end">
             <p className="mb-2">
-              <strong className="text-black">Name:</strong> {formData.name}
+              <strong className="text-[#8b81fa]">Name:</strong> {formData.name}
             </p>
             <p className="mb-2">
-              <strong className="text-black">Phone:</strong> {formData.phone}
+              <strong className="text-[#8b81fa]">Phone:</strong>{" "}
+              {formData.phone}
             </p>
             <p className="mb-2">
-              <strong className="text-black">Gender:</strong> {formData.gender}
+              <strong className="text-[#8b81fa]">Gender:</strong>{" "}
+              {formData.gender}
             </p>
             <p className="mb-2">
-              <strong className="text-black">DOB:</strong> {formData.dob}
+              <strong className="text-[#8b81fa]">DOB:</strong> {formData.dob}
             </p>
           </div>
         </div>
@@ -148,12 +150,18 @@ const Profile = ({ user }) => {
           sx={{
             "& .MuiPaper-root": {
               padding: "20px",
-              backgroundColor: "#",
+              backgroundColor: "#111827",
+              color: "#ffff",
             },
           }}
         >
           <DialogTitle>Edit Profile</DialogTitle>
-          <DialogContent>
+          <DialogContent
+            className="dialog-content"
+            sx={{
+              color: "white", // Set text color to white
+            }}
+          >
             <TextField
               fullWidth
               label="Name"
@@ -161,6 +169,14 @@ const Profile = ({ user }) => {
               value={formData.name}
               onChange={handleChange}
               margin="normal"
+              sx={{
+                input: {
+                  color: "white",
+                },
+                label: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -169,6 +185,14 @@ const Profile = ({ user }) => {
               value={formData.phone}
               onChange={handleChange}
               margin="normal"
+              sx={{
+                input: {
+                  color: "white",
+                },
+                label: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -177,6 +201,14 @@ const Profile = ({ user }) => {
               value={formData.imgUrl}
               onChange={handleChange}
               margin="normal"
+              sx={{
+                input: {
+                  color: "white",
+                },
+                label: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -186,10 +218,51 @@ const Profile = ({ user }) => {
               value={formData.gender}
               onChange={handleChange}
               margin="normal"
+              sx={{
+                input: {
+                  color: "white",
+                },
+                label: {
+                  color: "white",
+                },
+              }}
             >
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
-              <MenuItem value="Other">Other</MenuItem>
+              <MenuItem
+                value="Male"
+                sx={{
+                  color: "white", // Set text color to white
+                  backgroundColor: "#111827", // Set background color to dark
+                  "&:hover": {
+                    backgroundColor: "#444444", // Slightly lighter dark background on hover
+                  },
+                }}
+              >
+                Male
+              </MenuItem>
+              <MenuItem
+                value="Female"
+                sx={{
+                  color: "white", // Set text color to white
+                  backgroundColor: "#111827", // Set background color to dark
+                  "&:hover": {
+                    backgroundColor: "#444444", // Slightly lighter dark background on hover
+                  },
+                }}
+              >
+                Female
+              </MenuItem>
+              <MenuItem
+                value="Other"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#111827", 
+                  "&:hover": {
+                    backgroundColor: "#444444",
+                  },
+                }}
+              >
+                Other
+              </MenuItem>
             </TextField>
             <TextField
               fullWidth
@@ -201,6 +274,14 @@ const Profile = ({ user }) => {
               margin="normal"
               InputLabelProps={{
                 shrink: true,
+              }}
+              sx={{
+                input: {
+                  color: "white",
+                },
+                label: {
+                  color: "white",
+                },
               }}
             />
           </DialogContent>
@@ -224,6 +305,13 @@ const Profile = ({ user }) => {
           onClose={() => setIsDeleteModalOpen(false)}
           fullWidth
           maxWidth="sm"
+          sx={{
+            "& .MuiPaper-root": {
+              padding: "20px",
+              backgroundColor: "#111827",
+              color: "#ffff",
+            },
+          }}
         >
           <DialogTitle>Confirm Account Deletion</DialogTitle>
           <DialogContent>

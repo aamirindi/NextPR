@@ -12,7 +12,7 @@ const Fitness = () => {
   };
 
   return (
-    <div>
+    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 min-h-screen text-white">
       <Navbar userId={userId} />
       <WorkoutLog userId={userId} onWorkoutUpdate={handleWorkoutUpdate} />
     </div>
