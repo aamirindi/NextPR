@@ -24,7 +24,6 @@ const Home = () => {
         ...doc.data(),
       }));
 
-      // Group by exercise and get the most recent record
       const groupedWorkouts = workoutData.reduce((acc, workout) => {
         if (!acc[workout.exercise]) {
           acc[workout.exercise] = workout;
@@ -51,25 +50,32 @@ const Home = () => {
   }
 
   return (
-    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 min-h-screen text-white ">
+    <div className="bg-gradient-to-r from-purple-500 to-indigo-600 min-h-screen text-white">
       <Navbar userId={userId} />
-      <div className="container mx-auto p-8">
-        <h1 className="text-4xl font-bold text-center mb-6 italic">Recent Workouts</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 workout-form">
+      <div className="container mx-auto p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pl-14 pr">
           {workouts.map((workout) => (
             <div
               key={workout.id}
-              className="bg-white text-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl"
+              className="bg-gray-800 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105"
             >
-              <div className="mb-4">
-                <p className="text-2xl font-semibold">{workout.exercise}</p>
-                <p className="text-lg text-gray-600 mt-2">{`Sets: ${workout.sets}, Reps: ${workout.reps}, Weight: ${workout.weight}kg`}</p>
-                <p className="text-gray-500 mt-1">{new Date(workout.date.seconds * 1000).toLocaleDateString()}</p>
-              </div>
+              <h2 className="text-2xl font-bold mb-4">{workout.exercise}</h2>
+              <p className="text-lg">
+                <strong>Sets:</strong> {workout.sets}
+              </p>
+              <p className="text-lg">
+                <strong>Reps:</strong> {workout.reps}
+              </p>
+              <p className="text-lg">
+                <strong>Weight:</strong> {workout.weight} kg
+              </p>
+              <p className="text-gray-400 text-sm mt-2">
+                {new Date(workout.date.seconds * 1000).toLocaleDateString()}
+              </p>
               {workout.isPR && (
-                <div className="bg-green-500 text-white px-4 py-2 rounded-full inline-block mt-4">
-                  New PR!
-                </div>
+                <span className="mt-4 inline-block bg-green-600 text-white py-2 px-4 rounded-full">
+                  🎉 New PR!
+                </span>
               )}
             </div>
           ))}
@@ -78,5 +84,6 @@ const Home = () => {
     </div>
   );
 };
+
 
 export default Home;

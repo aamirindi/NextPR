@@ -9,6 +9,7 @@ import {
   orderBy,
   limit,
 } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   const [exercise, setExercise] = useState("");
@@ -16,28 +17,40 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   const [reps, setReps] = useState("");
   const [weight, setWeight] = useState("");
   const [notes, setNotes] = useState("");
+  const navigate = useNavigate();
+
+  const normalizeExerciseName = (name) => name.trim().toLowerCase();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const normalizedExercise = normalizeExerciseName(exercise);
+
     try {
       const workoutsRef = collection(db, "workouts");
       const q = query(
         workoutsRef,
         where("userId", "==", userId),
-        where("exercise", "==", exercise),
+        where("exercise", "==", normalizedExercise),
         orderBy("weight", "desc"),
         limit(1)
       );
 
       const querySnapshot = await getDocs(q);
-      const previousPR = querySnapshot.docs[0]?.data()?.weight || 0;
+      let isPR = false;
 
-      const isPR = parseFloat(weight) > parseFloat(previousPR);
+      if (!querySnapshot.empty) {
+        const previousWorkout = querySnapshot.docs[0].data();
+        const { reps: prevReps, weight: prevWeight } = previousWorkout;
+        isPR =
+          parseFloat(weight) > prevWeight ||
+          (parseFloat(weight) === prevWeight && parseInt(reps, 10) > prevReps);
+      } else {
+        isPR = true;
+      }
 
-      // Add workout to Firestore
       await addDoc(workoutsRef, {
         userId,
-        exercise,
+        exercise: normalizedExercise,
         sets: parseInt(sets, 10),
         reps: parseInt(reps, 10),
         weight: parseFloat(weight),
@@ -46,33 +59,33 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
         isPR,
       });
 
-      // Notify parent component of workout update
       onWorkoutUpdate();
-
-      // Clear form fields
       setExercise("");
       setSets("");
       setReps("");
       setWeight("");
       setNotes("");
+      navigate("/home");
     } catch (error) {
       console.error("Error adding document:", error);
     }
   };
 
   return (
-    <div className="flex justify-center items-center flex-col mt-20 mx-2">
+    <div className="flex justify-center items-center flex-col mt-4 mx-4"> 
       <form
         onSubmit={handleSubmit}
-        className="max-w-lg mx-auto bg-gray-900 p-6 rounded-lg shadow-lg text-white space-y-6"
+        className="max-w-lg mx-auto bg-gray-800 p-8 rounded-2xl shadow-2xl text-white space-y-8"
       >
-        <h1 className="text-2xl font-semibold text-center">Log Your Workout</h1>
+        <h1 className="text-3xl font-extrabold text-center mb-4 text-purple-400">
+          Log Your Workout
+        </h1>
         <input
           type="text"
           value={exercise}
           onChange={(e) => setExercise(e.target.value)}
-          placeholder="Exercise"
-          className="w-full p-3 rounded-md bg-gray-800 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
+          placeholder="Exercise Name"
+          className="w-full p-4 rounded-lg bg-gray-900 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
           required
         />
         <div className="grid grid-cols-3 gap-4">
@@ -81,7 +94,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
             value={sets}
             onChange={(e) => setSets(e.target.value)}
             placeholder="Sets"
-            className="p-3 rounded-md bg-gray-800 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
+            className="p-4 rounded-lg bg-gray-900 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
             required
           />
           <input
@@ -89,7 +102,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
             value={reps}
             onChange={(e) => setReps(e.target.value)}
             placeholder="Reps"
-            className="p-3 rounded-md bg-gray-800 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
+            className="p-4 rounded-lg bg-gray-900 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
             required
           />
           <input
@@ -97,19 +110,19 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             placeholder="Weight (kg)"
-            className="p-3 rounded-md bg-gray-800 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
+            className="p-4 rounded-lg bg-gray-900 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
             required
           />
         </div>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Notes"
-          className="w-full p-3 rounded-md bg-gray-800 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
+          placeholder="Additional Notes (optional)"
+          className="w-full p-4 rounded-lg bg-gray-900 border border-gray-700 focus:ring focus:ring-purple-500 focus:outline-none"
         ></textarea>
         <button
           type="submit"
-          className="w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-semibold transition duration-300"
+          className="w-full py-4 bg-purple-600 hover:bg-purple-700 rounded-lg text-white font-bold transition duration-300 shadow-lg hover:shadow-xl"
         >
           Log Workout
         </button>
@@ -117,5 +130,6 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
     </div>
   );
 };
+
 
 export default WorkoutLog;
