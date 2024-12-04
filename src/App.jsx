@@ -13,6 +13,7 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import Fitness from "./components/Fitness";
+import History from "./components/History";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -67,6 +68,14 @@ const App = () => {
           element={
             <ProtectedRoute user={user}>
               <Fitness user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute user={user}>
+              <History user={user} />
             </ProtectedRoute>
           }
         />

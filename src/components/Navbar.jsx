@@ -6,6 +6,7 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 
 const Navbar = ({ userId }) => {
   const navigate = useNavigate();
@@ -102,6 +103,16 @@ const Navbar = ({ userId }) => {
             >
               <FitnessCenterIcon />
             </div>
+            <div
+              className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
+                isActive("/history")
+                  ? "bg-[#8c81fa] text-black"
+                  : "hover:bg-white hover:text-black"
+              }`}
+              onClick={() => navigate("/history", { state: { userId } })}
+            >
+              <HistoryOutlinedIcon />
+            </div>
           </div>
           <div
             onClick={handleSignOut}
@@ -148,6 +159,16 @@ const Navbar = ({ userId }) => {
               onClick={handleNavigateToFitness}
             >
               <FitnessCenterIcon />
+            </div>
+            <div
+              className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
+                isActive("/history")
+                  ? "bg-[#8c81fa] text-black"
+                  : "hover:bg-white hover:text-black"
+              }`}
+              onClick={() => navigate("/history", { state: { userId } })}
+            >
+              <HistoryOutlinedIcon />
             </div>
           </div>
           <div

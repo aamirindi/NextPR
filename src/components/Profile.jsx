@@ -147,21 +147,9 @@ const Profile = ({ user }) => {
           onClose={() => setIsEditModalOpen(false)}
           fullWidth
           maxWidth="sm"
-          sx={{
-            "& .MuiPaper-root": {
-              padding: "20px",
-              backgroundColor: "#111827",
-              color: "#ffff",
-            },
-          }}
         >
           <DialogTitle>Edit Profile</DialogTitle>
-          <DialogContent
-            className="dialog-content"
-            sx={{
-              color: "white", // Set text color to white
-            }}
-          >
+          <DialogContent>
             <TextField
               fullWidth
               label="Name"
@@ -169,14 +157,6 @@ const Profile = ({ user }) => {
               value={formData.name}
               onChange={handleChange}
               margin="normal"
-              sx={{
-                input: {
-                  color: "white",
-                },
-                label: {
-                  color: "white",
-                },
-              }}
             />
             <TextField
               fullWidth
@@ -185,14 +165,6 @@ const Profile = ({ user }) => {
               value={formData.phone}
               onChange={handleChange}
               margin="normal"
-              sx={{
-                input: {
-                  color: "white",
-                },
-                label: {
-                  color: "white",
-                },
-              }}
             />
             <TextField
               fullWidth
@@ -201,14 +173,6 @@ const Profile = ({ user }) => {
               value={formData.imgUrl}
               onChange={handleChange}
               margin="normal"
-              sx={{
-                input: {
-                  color: "white",
-                },
-                label: {
-                  color: "white",
-                },
-              }}
             />
             <TextField
               fullWidth
@@ -218,51 +182,10 @@ const Profile = ({ user }) => {
               value={formData.gender}
               onChange={handleChange}
               margin="normal"
-              sx={{
-                input: {
-                  color: "white",
-                },
-                label: {
-                  color: "white",
-                },
-              }}
             >
-              <MenuItem
-                value="Male"
-                sx={{
-                  color: "white", // Set text color to white
-                  backgroundColor: "#111827", // Set background color to dark
-                  "&:hover": {
-                    backgroundColor: "#444444", // Slightly lighter dark background on hover
-                  },
-                }}
-              >
-                Male
-              </MenuItem>
-              <MenuItem
-                value="Female"
-                sx={{
-                  color: "white", // Set text color to white
-                  backgroundColor: "#111827", // Set background color to dark
-                  "&:hover": {
-                    backgroundColor: "#444444", // Slightly lighter dark background on hover
-                  },
-                }}
-              >
-                Female
-              </MenuItem>
-              <MenuItem
-                value="Other"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#111827", 
-                  "&:hover": {
-                    backgroundColor: "#444444",
-                  },
-                }}
-              >
-                Other
-              </MenuItem>
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
             </TextField>
             <TextField
               fullWidth
@@ -274,14 +197,6 @@ const Profile = ({ user }) => {
               margin="normal"
               InputLabelProps={{
                 shrink: true,
-              }}
-              sx={{
-                input: {
-                  color: "white",
-                },
-                label: {
-                  color: "white",
-                },
               }}
             />
           </DialogContent>
@@ -305,13 +220,6 @@ const Profile = ({ user }) => {
           onClose={() => setIsDeleteModalOpen(false)}
           fullWidth
           maxWidth="sm"
-          sx={{
-            "& .MuiPaper-root": {
-              padding: "20px",
-              backgroundColor: "#111827",
-              color: "#ffff",
-            },
-          }}
         >
           <DialogTitle>Confirm Account Deletion</DialogTitle>
           <DialogContent>

@@ -15,23 +15,37 @@ const Home = () => {
       const q = query(
         workoutsRef,
         where("userId", "==", userId),
-        orderBy("date", "desc")
+        where("isPR", "==", true)
       );
 
       const querySnapshot = await getDocs(q);
-      const workoutData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const workoutData = [];
 
-      const groupedWorkouts = workoutData.reduce((acc, workout) => {
-        if (!acc[workout.exercise]) {
-          acc[workout.exercise] = workout;
+      // Track the highest PR for each exercise
+      const exerciseMap = new Map();
+
+      querySnapshot.docs.forEach((doc) => {
+        const workout = { id: doc.id, ...doc.data() };
+        const { exercise, weight, reps } = workout;
+
+        if (!exerciseMap.has(exercise)) {
+          exerciseMap.set(exercise, workout);
+        } else {
+          const existingPR = exerciseMap.get(exercise);
+          if (
+            parseFloat(weight) > existingPR.weight ||
+            (parseFloat(weight) === existingPR.weight &&
+              parseInt(reps, 10) > existingPR.reps)
+          ) {
+            exerciseMap.set(exercise, workout);
+          }
         }
-        return acc;
-      }, {});
+      });
 
-      setWorkouts(Object.values(groupedWorkouts));
+      // Add the best PRs to workoutData
+      exerciseMap.forEach((value) => workoutData.push(value));
+
+      setWorkouts(workoutData);
     } catch (error) {
       console.error("Error fetching workouts:", error);
     }
@@ -59,7 +73,9 @@ const Home = () => {
               key={workout.id}
               className="bg-gray-800 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105"
             >
-              <h2 className="text-2xl font-bold mb-4">{workout.exercise}</h2>
+              <h2 className="text-3xl capitalize italic font-bold mb-4">
+                {workout.exercise}
+              </h2>
               <p className="text-lg">
                 <strong>Sets:</strong> {workout.sets}
               </p>
@@ -84,6 +100,5 @@ const Home = () => {
     </div>
   );
 };
-
 
 export default Home;
