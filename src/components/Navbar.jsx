@@ -58,7 +58,7 @@ const Navbar = ({ userId }) => {
       {/* Navbar */}
       <div className="flex justify-between w-full p-3 navbar">
         <div
-          className="menu-icon lg:hidden cursor-pointer"
+          className="menu-icon lg:hidden cursor-pointer nav-icon"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
           <div className="w-6 h-0.5 bg-black mb-1"></div>

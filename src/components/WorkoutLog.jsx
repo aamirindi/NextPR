@@ -10,6 +10,7 @@ import {
   limit,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { doc, updateDoc } from "firebase/firestore";
 
 const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   const [exercise, setExercise] = useState("");
@@ -41,20 +42,22 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
       let isPR = false;
 
       if (!querySnapshot.empty) {
-        const previousWorkout = querySnapshot.docs[0];
-        const { reps: prevReps, weight: prevWeight } = previousWorkout.data();
+        const previousWorkoutDoc = querySnapshot.docs[0];
+        const { reps: prevReps, weight: prevWeight } =
+          previousWorkoutDoc.data();
 
-        // Check if the current workout exceeds the previous PR
+        // Check if the new workout is a PR
         isPR =
           parseFloat(weight) > prevWeight ||
           (parseFloat(weight) === prevWeight && parseInt(reps, 10) > prevReps);
 
         if (isPR) {
-          // Correctly update the old PR to isPR = false
-          await previousWorkout.ref.update({ isPR: false });
+          // Update the old PR's isPR field to false
+          const prevPRRef = doc(db, "workouts", previousWorkoutDoc.id);
+          await updateDoc(prevPRRef, { isPR: false });
         }
       } else {
-        // If no previous PR exists, this is the first PR
+        // No previous PR exists, so this is the first PR
         isPR = true;
       }
 
@@ -84,12 +87,12 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   };
 
   return (
-    <div className="flex justify-center items-center flex-col mt-20 mx-2">
+    <div className="flex justify-center workout items-center flex-col mt-20 mx-2">
       <form
         onSubmit={handleSubmit}
-        className="max-w-lg mx-auto bg-gray-900 p-6 rounded-lg shadow-lg text-white space-y-6"
+        className="max-w-lg mx-auto bg-gray-900 p-6 rounded-lg shadow-lg text-white space-y-6 "
       >
-        <h1 className="text-2xl font-semibold text-center">Log Your Workout</h1>
+        <h1 className="text-3xl font-semibold text-center header">Log Your Workout</h1>
         <input
           type="text"
           value={exercise}

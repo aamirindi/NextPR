@@ -15,6 +15,7 @@ const History = () => {
   const userId = auth.currentUser?.uid;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [workouts, setWorkouts] = useState([]);
+  const [expandedWorkoutId, setExpandedWorkoutId] = useState(null);
 
   // Fetch workouts by date range (start of the day to end of the day)
   const fetchWorkoutsByDate = async (date) => {
@@ -53,39 +54,76 @@ const History = () => {
     fetchWorkoutsByDate(selectedDate);
   }, [selectedDate, userId]);
 
+  const toggleWorkoutDetails = (id) => {
+    setExpandedWorkoutId((prevId) => (prevId === id ? null : id));
+  };
+
   return (
-    <div className="bg-gradient-to-r from-purple-500 to-indigo-600 min-h-screen text-white font-sans">
+    <div className="bg-purple-600  min-h-screen text-white font-sans">
       <Navbar userId={userId} />
       <div className="container mx-auto p-6 flex flex-col justify-center items-center">
         <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">
           {/* Calendar */}
-          <div className="p-4 rounded-xl border shadow-xl bg-white text-zinc-800 w-full max-w-xs">
+          <div className="p-4 rounded-xl w-full max-w-xs">
             <Calendar
               onChange={setSelectedDate}
               value={selectedDate}
-              className="rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+              className="text-zinc-700 rounded-lg p-2 shadow-2xl calendar-custom"
             />
           </div>
+
           {/* Workout Data */}
           <div className="lg:w-2/3 w-full">
             {workouts.length > 0 ? (
               workouts.map((workout) => (
                 <div
                   key={workout.id}
-                  className="bg-gray-800 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out mb-6"
+                  className="bg-gray-800 text-white p-4 shadow-lg hover:shadow-2xl transition duration-300 ease-in-out mb-2"
                 >
-                  <h2 className="text-3xl font-bold mb-4 text-gradient bg-clip-text italic capitalize text-red-500">
-                    {workout.exercise}
-                  </h2>
-                  <p className="text-lg mb-2">
-                    <strong>Sets:</strong> {workout.sets}
-                  </p>
-                  <p className="text-lg mb-2">
-                    <strong>Reps:</strong> {workout.reps}
-                  </p>
-                  <p className="text-lg mb-4">
-                    <strong>Weight:</strong> {workout.weight} kg
-                  </p>
+                  <div className="flex items-center justify-between ">
+                    <h2 className="text-2xl header-history capitalize  font-semibold">
+                      {workout.exercise}
+                    </h2>
+                    <button
+                      onClick={() => toggleWorkoutDetails(workout.id)}
+                      className="text-xl font-bold px-2 ml-5 rounded-full text-white focus:outline-none"
+                    >
+                      {expandedWorkoutId === workout.id ? "-" : "+"}
+                    </button>
+                  </div>
+                  <div
+                    className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                      expandedWorkoutId === workout.id
+                        ? "max-h-screen opacity-100"
+                        : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <div className="mt-4 history-list">
+                      <ul>
+                        <li className="flex items-center justify-between">
+                          <p className="text-lg mb-2 text-yellow-200 ">Sets :</p>
+                          <p className="font-bold">
+                            {workout.sets}
+                          </p>
+                        </li>
+                        <li className="flex items-center justify-between">
+                          <p className="text-lg mb-2 text-yellow-200">Reps :</p>
+                          <p className=" font-bold">
+                            {workout.reps}
+                          </p>
+                        </li>
+                        <li className="flex items-center justify-between">
+                          <p className="text-lg mb-2 text-yellow-200">Weight :</p>
+                          <p className=" font-bold">
+                            {workout.weight} kg
+                          </p>
+                        </li>
+                      </ul>
+                      <p className="text-sm text-gray-400 italic">
+                        Notes: {workout.notes || "No notes provided."}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ))
             ) : (
