@@ -58,14 +58,16 @@ const Navbar = ({ userId }) => {
       {/* Navbar */}
       <div className="flex justify-between w-full p-3 navbar">
         <div
-          className="menu-icon lg:hidden cursor-pointer nav-icon"
+          className="menu-icon lg:hidden cursor-pointer nav-icon flex flex-col justify-center"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
           <div className="w-6 h-0.5 bg-black mb-1"></div>
           <div className="w-6 h-0.5 bg-black mb-1"></div>
           <div className="w-6 h-0.5 bg-black"></div>
         </div>
-        <div className="lg:ml-auto text-black">logo</div>
+        <div className="lg:ml-auto text-black">
+          <img src="/assets/logo.png" alt="logo" width={40} height={40} />  
+        </div>
       </div>
 
       {/* Sidebar */}
