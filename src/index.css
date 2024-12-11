@@ -59,7 +59,8 @@ body {
   margin-bottom: 1rem;
   font-family: "Roboto Mono", monospace;
   font-optical-sizing: auto;
-  font-style: normal;
+  font-style: italic;
+
 }
 .header-history {
   font-family: "Roboto Mono", monospace;
