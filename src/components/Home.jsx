@@ -57,41 +57,50 @@ const Home = () => {
     <div className="bg-purple-600 min-h-screen text-white">
       <Navbar userId={userId} />
       <div className="container mx-auto p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pl-14 pr">
-          {workouts.map((workout) => (
-            <div
-              key={workout.id}
-              className="bg-gray-800 text-white p-6 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:scale-105 w-full"
-            >
-              <h2 className="text-3xl capitalize header-history  italic font-bold mb-4">
-                {workout.exercise}
-              </h2>
+        {workouts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+            <p className="text-2xl font-bold italic">No Records Found</p>
+            <p className="text-lg text-gray-300 mt-2 ">
+              Start logging your workouts to see them here!
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pl-14 pr">
+            {workouts.map((workout) => (
+              <div
+                key={workout.id}
+                className="bg-gray-800 text-white p-6 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:scale-105 w-full"
+              >
+                <h2 className="text-3xl capitalize header-history italic font-bold mb-4">
+                  {workout.exercise}
+                </h2>
 
-              <ul className="mt-4 history-list">
-                <li className="flex items-center justify-between">
-                  <p className="text-lg mb-2 text-yellow-200 ">Sets :</p>
-                  <p className="font-bold">{workout.sets}</p>
-                </li>
-                <li className="flex items-center justify-between">
-                  <p className="text-lg mb-2 text-yellow-200">Reps :</p>
-                  <p className=" font-bold">{workout.reps}</p>
-                </li>
-                <li className="flex items-center justify-between">
-                  <p className="text-lg mb-2 text-yellow-200">Weight :</p>
-                  <p className=" font-bold">{workout.weight} kg</p>
-                </li>
-              </ul>
-              <p className="text-gray-400 text-sm mt-2">
-                {new Date(workout.date.seconds * 1000).toLocaleDateString()}
-              </p>
-              {workout.isPR && (
-                <span className="mt-4 inline-block bg-green-800 text-white py-2 px-4 rounded-xl">
-                  New PR!
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
+                <ul className="mt-4 history-list">
+                  <li className="flex items-center justify-between">
+                    <p className="text-lg mb-2 text-yellow-200 ">Sets :</p>
+                    <p className="font-bold">{workout.sets}</p>
+                  </li>
+                  <li className="flex items-center justify-between">
+                    <p className="text-lg mb-2 text-yellow-200">Reps :</p>
+                    <p className=" font-bold">{workout.reps}</p>
+                  </li>
+                  <li className="flex items-center justify-between">
+                    <p className="text-lg mb-2 text-yellow-200">Weight :</p>
+                    <p className=" font-bold">{workout.weight} kg</p>
+                  </li>
+                </ul>
+                <p className="text-gray-400 text-sm mt-2">
+                  {new Date(workout.date.seconds * 1000).toLocaleDateString()}
+                </p>
+                {workout.isPR && (
+                  <span className="mt-4 inline-block bg-green-800 text-white py-2 px-4 rounded-xl">
+                    New PR!
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

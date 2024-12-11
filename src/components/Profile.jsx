@@ -98,12 +98,21 @@ const Profile = ({ user }) => {
         <div className="relative profile-container flex justify-between">
           <div className="mb-4 relative profile-img-container">
             <img
-              src={formData.imgUrl || "https://via.placeholder.com/150"}
+              src={
+                formData.imgUrl && formData.imgUrl.trim() !== ""
+                  ? formData.imgUrl
+                  : "/assets/user.png"
+              }
               alt="Profile"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/assets/user.png"; 
+              }}
               className="rounded-full"
               width="150"
             />
           </div>
+
           <div className="flex gap-3 flex-col mb-5 profile-text items-end">
             <p className="mb-2">
               <strong className="text-purple-500">Name:</strong> {formData.name}
