@@ -99,26 +99,29 @@ const History = () => {
                     }`}
                   >
                     <div className="mt-4 history-list">
-                      <ul>
+                      <ul className="mt-4 history-list">
                         <li className="flex items-center justify-between">
-                          <p className="text-lg mb-2 text-yellow-200 ">Sets :</p>
-                          <p className="font-bold">
-                            {workout.sets}
+                          <p className="text-md mb-2 text-yellow-200 ">
+                            Sets :
                           </p>
+                          <p className="font-bold">{workout.sets}</p>
                         </li>
                         <li className="flex items-center justify-between">
-                          <p className="text-lg mb-2 text-yellow-200">Reps :</p>
-                          <p className=" font-bold">
-                            {workout.reps}
-                          </p>
+                          <p className="text-md mb-2 text-yellow-200">Reps :</p>
+                          <p className="font-bold">{workout.reps}</p>
                         </li>
                         <li className="flex items-center justify-between">
-                          <p className="text-lg mb-2 text-yellow-200">Weight :</p>
-                          <p className=" font-bold">
-                            {workout.weight} kg
+                          <p className="text-md mb-2 text-yellow-200">
+                            Weight :
                           </p>
+                          <p className="font-bold">{workout.weight} kg</p>
+                        </li>
+                        <li className="flex items-center justify-between">
+                          <p className="text-md mb-2 text-yellow-200">Time :</p>
+                          <p>{`${workout.time.minutes} minutes, ${workout.time.seconds} seconds`}</p>
                         </li>
                       </ul>
+
                       <p className="text-sm text-gray-400 italic">
                         Notes: {workout.notes || "No notes provided."}
                       </p>

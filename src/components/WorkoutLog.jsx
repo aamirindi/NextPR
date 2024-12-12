@@ -18,14 +18,21 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   const [reps, setReps] = useState("");
   const [weight, setWeight] = useState("");
   const [notes, setNotes] = useState("");
+  const [time, setTime] = useState({ minutes: "", seconds: "" });
+  const [view, setView] = useState("NO");
   const navigate = useNavigate();
 
-  // Function to normalize exercise names
   const normalizeExerciseName = (name) => name.trim().toLowerCase();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const normalizedExercise = normalizeExerciseName(exercise);
+
+    const normalizedTime = {
+      minutes: time.minutes ? parseInt(time.minutes, 10) : 0,
+      seconds: time.seconds ? parseInt(time.seconds, 10) : 0,
+    };
+    const normalizedReps = reps ? parseInt(reps, 10) : 0;
 
     try {
       const workoutsRef = collection(db, "workouts");
@@ -46,40 +53,39 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
         const { reps: prevReps, weight: prevWeight } =
           previousWorkoutDoc.data();
 
-        // Check if the new workout is a PR
         isPR =
           parseFloat(weight) > prevWeight ||
-          (parseFloat(weight) === prevWeight && parseInt(reps, 10) > prevReps);
+          (parseFloat(weight) === prevWeight && normalizedReps > prevReps);
 
         if (isPR) {
-          // Update the old PR's isPR field to false
           const prevPRRef = doc(db, "workouts", previousWorkoutDoc.id);
           await updateDoc(prevPRRef, { isPR: false });
         }
       } else {
-        // No previous PR exists, so this is the first PR
         isPR = true;
       }
 
-      // Add the new workout
       await addDoc(workoutsRef, {
         userId,
         exercise: normalizedExercise,
-        sets: parseInt(sets, 10),
-        reps: parseInt(reps, 10),
-        weight: parseFloat(weight),
+        sets: parseInt(sets, 10) || 0,
+        reps: normalizedReps,
+        weight: weight ? parseFloat(weight) : 0,
+        time: normalizedTime,
         notes,
+        view,
         date: new Date(),
         isPR,
       });
 
-      // Update the UI and reset the form
       onWorkoutUpdate();
       setExercise("");
       setSets("");
       setReps("");
       setWeight("");
       setNotes("");
+      setTime({ minutes: "", seconds: "" });
+      setView("YES");
       navigate("/home");
     } catch (error) {
       console.error("Error adding document:", error);
@@ -87,7 +93,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   };
 
   return (
-    <div className="flex justify-center workout items-center flex-col mt-20 mx-2">
+    <div className="flex justify-center workout items-center flex-col mx-2">
       <form
         onSubmit={handleSubmit}
         className="max-w-lg mx-auto  p-6  text-white space-y-6 "
@@ -110,7 +116,6 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
             onChange={(e) => setSets(e.target.value)}
             placeholder="Sets"
             className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
-            required
           />
           <input
             type="number"
@@ -118,7 +123,6 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
             onChange={(e) => setReps(e.target.value)}
             placeholder="Reps"
             className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
-            required
           />
           <input
             type="number"
@@ -126,7 +130,26 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
             onChange={(e) => setWeight(e.target.value)}
             placeholder="Weight (kg)"
             className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
-            required
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <input
+            type="number"
+            value={time.minutes}
+            onChange={(e) =>
+              setTime((prev) => ({ ...prev, minutes: e.target.value }))
+            }
+            placeholder="Minutes"
+            className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
+          />
+          <input
+            type="number"
+            value={time.seconds}
+            onChange={(e) =>
+              setTime((prev) => ({ ...prev, seconds: e.target.value }))
+            }
+            placeholder="Seconds"
+            className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
           />
         </div>
         <textarea
@@ -135,6 +158,17 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
           placeholder="Notes"
           className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
         ></textarea>
+
+        <p>View on Home Page?</p>
+        <select
+          value={view}
+          onChange={(e) => setView(e.target.value)}
+          className="w-full p-3 rounded-md bg-[#474848] select  border-[#797d7d] border-2 outline-none"
+          required
+        >
+          <option value="YES">Yes</option>
+          <option value="NO">No</option>
+        </select>
         <button
           type="submit"
           className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold transition duration-300"
