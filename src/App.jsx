@@ -30,7 +30,7 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#242525]">
+      <div className="flex items-center justify-center h-screen bg-[#242525] ">
         <img src="/assets/loading6.gif" alt="loading" width={100} />
       </div>
     );

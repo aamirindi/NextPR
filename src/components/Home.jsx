@@ -48,13 +48,13 @@ const Home = () => {
   if (!userId) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <img src="/assets/loading.gif" alt="loading" width={100} height={100} />
+        <img src="/assets/loading6.gif" alt="loading" width={100} height={100} />
       </div>
     );
   }
 
   return (
-    <div className="bg-purple-600 min-h-screen text-white">
+    <div className=" min-h-screen text-white">
       <Navbar userId={userId} />
       <div className="container mx-auto p-4">
         {workouts.length === 0 ? (
@@ -69,23 +69,23 @@ const Home = () => {
             {workouts.map((workout) => (
               <div
                 key={workout.id}
-                className="bg-gray-800 text-white p-6 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:scale-105 w-full"
+                className="bg-[#474848] text-white p-6 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:scale-y-105 w-full"
               >
-                <h2 className="text-3xl capitalize header-history italic font-bold mb-4">
+                <h2 className="text-2xl capitalize header-history italic font-bold mb-4">
                   {workout.exercise}
                 </h2>
 
                 <ul className="mt-4 history-list">
                   <li className="flex items-center justify-between">
-                    <p className="text-lg mb-2 text-yellow-200 ">Sets :</p>
+                    <p className="text-md mb-2 text-yellow-200 ">Sets :</p>
                     <p className="font-bold">{workout.sets}</p>
                   </li>
                   <li className="flex items-center justify-between">
-                    <p className="text-lg mb-2 text-yellow-200">Reps :</p>
+                    <p className="text-md mb-2 text-yellow-200">Reps :</p>
                     <p className=" font-bold">{workout.reps}</p>
                   </li>
                   <li className="flex items-center justify-between">
-                    <p className="text-lg mb-2 text-yellow-200">Weight :</p>
+                    <p className="text-md mb-2 text-yellow-200">Weight :</p>
                     <p className=" font-bold">{workout.weight} kg</p>
                   </li>
                 </ul>
@@ -93,7 +93,7 @@ const Home = () => {
                   {new Date(workout.date.seconds * 1000).toLocaleDateString()}
                 </p>
                 {workout.isPR && (
-                  <span className="mt-4 inline-block bg-green-800 text-white py-2 px-4 rounded-xl">
+                  <span className="mt-4 inline-block border-yellow-200 border-[3px] text-white py-2 px-4 rounded-md">
                     New PR!
                   </span>
                 )}

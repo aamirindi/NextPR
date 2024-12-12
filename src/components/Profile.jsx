@@ -91,9 +91,9 @@ const Profile = ({ user }) => {
   };
 
   return (
-    <div className="bg-purple-600 min-h-screen text-white">
+    <div className=" min-h-screen text-white">
       <Navbar />
-      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-2xl text-white profile-form bg-gray-900">
+      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-2xl text-white profile-form ">
         {/* Display Current Info */}
         <div className="relative profile-container flex justify-between">
           <div className="mb-4 relative profile-img-container">
@@ -115,18 +115,18 @@ const Profile = ({ user }) => {
 
           <div className="flex gap-3 flex-col mb-5 profile-text items-end">
             <p className="mb-2">
-              <strong className="text-purple-500">Name:</strong> {formData.name}
+              <strong className="text-yellow-200">Name:</strong> {formData.name}
             </p>
             <p className="mb-2">
-              <strong className="text-purple-500">Phone:</strong>{" "}
+              <strong className="text-yellow-200">Phone:</strong>{" "}
               {formData.phone}
             </p>
             <p className="mb-2">
-              <strong className="text-purple-500">Gender:</strong>{" "}
+              <strong className="text-yellow-200">Gender:</strong>{" "}
               {formData.gender}
             </p>
             <p className="mb-2">
-              <strong className="text-purple-500">DOB:</strong> {formData.dob}
+              <strong className="text-yellow-200">DOB:</strong> {formData.dob}
             </p>
           </div>
         </div>

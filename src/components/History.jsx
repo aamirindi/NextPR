@@ -59,7 +59,7 @@ const History = () => {
   };
 
   return (
-    <div className="bg-purple-600  min-h-screen text-white font-sans">
+    <div className=" min-h-screen text-white font-sans">
       <Navbar userId={userId} />
       <div className="container mx-auto p-6 flex flex-col justify-center items-center">
         <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">
@@ -68,7 +68,7 @@ const History = () => {
             <Calendar
               onChange={setSelectedDate}
               value={selectedDate}
-              className="text-zinc-700 rounded-lg p-2 shadow-2xl calendar-custom"
+              className="rounded-lg p-2 shadow-2xl calendar-custom"
             />
           </div>
 
@@ -78,7 +78,7 @@ const History = () => {
               workouts.map((workout) => (
                 <div
                   key={workout.id}
-                  className="bg-gray-800 text-white p-4 shadow-lg hover:shadow-2xl transition duration-300 ease-in-out mb-2"
+                  className="bg-[#474848] text-white p-4 shadow-lg hover:shadow-2xl transition duration-300 ease-in-out mb-2"
                 >
                   <div className="flex items-center justify-between ">
                     <h2 className="text-2xl header-history capitalize  font-semibold">

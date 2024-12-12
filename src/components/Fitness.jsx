@@ -12,7 +12,7 @@ const Fitness = () => {
   };
 
   return (
-    <div className="bg-purple-600 min-h-screen text-white">
+    <div className=" min-h-screen text-white">
       <Navbar userId={userId} />
       <WorkoutLog userId={userId} onWorkoutUpdate={handleWorkoutUpdate} />
     </div>

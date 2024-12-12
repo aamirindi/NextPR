@@ -61,12 +61,12 @@ const Navbar = ({ userId }) => {
           className="menu-icon lg:hidden cursor-pointer nav-icon flex flex-col justify-center"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
-          <div className="w-6 h-0.5 bg-black mb-1"></div>
-          <div className="w-6 h-0.5 bg-black mb-1"></div>
-          <div className="w-6 h-0.5 bg-black"></div>
+          <div className="w-6 h-0.5 bg-zinc-300 mb-1"></div>
+          <div className="w-6 h-0.5 bg-zinc-300 mb-1"></div>
+          <div className="w-6 h-0.5 bg-zinc-300"></div>
         </div>
         <div className="lg:ml-auto text-black">
-          <img src="/assets/logo.png" alt="logo" width={40} height={40} />  
+          <img src="/assets/logo.png" alt="logo" width={40} height={40} />
         </div>
       </div>
 
@@ -78,7 +78,7 @@ const Navbar = ({ userId }) => {
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
                 isActive("/home")
-                  ? "bg-[#8c81fa] text-black"
+                  ? "bg-[#474848] text-white"
                   : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToHome}
@@ -88,7 +88,7 @@ const Navbar = ({ userId }) => {
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
                 isActive("/profile")
-                  ? "bg-[#8c81fa] text-black"
+                  ? "bg-[#474848] text-white"
                   : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToProfile}
@@ -98,7 +98,7 @@ const Navbar = ({ userId }) => {
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
                 isActive("/fitness")
-                  ? "bg-[#8c81fa] text-black"
+                  ? "bg-[#474848] text-white"
                   : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToFitness}
@@ -108,7 +108,7 @@ const Navbar = ({ userId }) => {
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
                 isActive("/history")
-                  ? "bg-[#8c81fa] text-black"
+                  ? "bg-[#474848] text-white"
                   : "hover:bg-white hover:text-black"
               }`}
               onClick={() => navigate("/history", { state: { userId } })}
@@ -135,7 +135,7 @@ const Navbar = ({ userId }) => {
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
                 isActive("/home")
-                  ? "bg-[#8c81fa] text-black"
+                  ? "bg-[#474848] text-white"
                   : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToHome}
@@ -145,7 +145,7 @@ const Navbar = ({ userId }) => {
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
                 isActive("/profile")
-                  ? "bg-[#8c81fa] text-black"
+                  ? "bg-[#474848] text-white"
                   : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToProfile}
@@ -155,7 +155,7 @@ const Navbar = ({ userId }) => {
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
                 isActive("/fitness")
-                  ? "bg-[#8c81fa] text-black"
+                  ? "bg-[#474848] text-white"
                   : "hover:bg-white hover:text-black"
               }`}
               onClick={handleNavigateToFitness}
@@ -165,7 +165,7 @@ const Navbar = ({ userId }) => {
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
                 isActive("/history")
-                  ? "bg-[#8c81fa] text-black"
+                  ? "bg-[#474848] text-white"
                   : "hover:bg-white hover:text-black"
               }`}
               onClick={() => navigate("/history", { state: { userId } })}
