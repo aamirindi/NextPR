@@ -22,7 +22,7 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setTimeout(() => setLoading(false), 4000);
+      setTimeout(() => setLoading(false), 1000);
     });
 
     return () => unsubscribe();
@@ -30,8 +30,8 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#8c81fa]">
-        <img src="/assets/loading4.gif" alt="loading" width={500} />
+      <div className="flex items-center justify-center h-screen bg-[#242525]">
+        <img src="/assets/loading6.gif" alt="loading" width={100} />
       </div>
     );
   }

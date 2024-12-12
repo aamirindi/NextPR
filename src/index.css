@@ -1,15 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Playwrite+HU:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Playwrite+HU:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
   height: 100vh;
+  background-color: #242525;
 }
 
 .main {
@@ -34,25 +37,20 @@ body {
 
 .form {
   width: 25rem;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px); /* Glass effect */
-  border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   padding: 2rem;
 }
 
 .btn {
   width: 100%;
-  background-color: #ed672970;
   font-size: 1rem;
-  border: 2px solid #fc5204;
 }
 
 .input {
   width: 100%;
-  padding: 5px;
-  border: 3px solid #f6f6f6;
-  color: #434343;
+  padding: 8px 10px;
+  color: #e5e5e5;
+  border: 2px solid #797d7d;
+  background-color: #474848;
 }
 
 .header {
@@ -60,7 +58,6 @@ body {
   font-family: "Roboto Mono", monospace;
   font-optical-sizing: auto;
   font-style: italic;
-
 }
 .header-history {
   font-family: "Roboto Mono", monospace;
@@ -176,7 +173,7 @@ body {
     width: 100%;
     height: 100vh;
     margin: 0;
-    
+
     & form {
       display: flex;
       flex-direction: column;
@@ -189,4 +186,8 @@ body {
   .workout-form {
     margin: 0;
   }
+}
+
+.border {
+  border: 1px solid black;
 }
