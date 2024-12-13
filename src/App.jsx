@@ -14,6 +14,7 @@ import Profile from "./components/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import Fitness from "./components/Fitness";
 import History from "./components/History";
+import Friends from "./components/Friends";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -31,7 +32,7 @@ const App = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#242525] ">
-        <img src="/assets/loading6.gif" alt="loading" width={100} />
+        <img src="/assets/loading6.gif" alt="loading" width={50} />
       </div>
     );
   }
@@ -76,6 +77,14 @@ const App = () => {
           element={
             <ProtectedRoute user={user}>
               <History user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/friends"
+          element={
+            <ProtectedRoute user={user}>
+              <Friends user={user} />
             </ProtectedRoute>
           }
         />
