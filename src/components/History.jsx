@@ -58,6 +58,11 @@ const History = () => {
     setExpandedWorkoutId((prevId) => (prevId === id ? null : id));
   };
 
+  // Function to convert lb to kg
+  const convertToKg = (weightInLb) => (weightInLb * 0.453592).toFixed(2);
+  // Function to convert kg to lb
+  const convertToLb = (weightInKg) => (weightInKg * 2.20462).toFixed(2);
+
   return (
     <div className=" min-h-screen text-white font-sans">
       <Navbar userId={userId} />
@@ -78,7 +83,7 @@ const History = () => {
               workouts.map((workout) => (
                 <div
                   key={workout.id}
-                  className="bg-[#474848] text-white p-4 shadow-lg hover:shadow-2xl transition duration-300 ease-in-out mb-2"
+                  className="bg-[#474848] mx-2 text-white p-4 shadow-lg hover:shadow-2xl transition duration-300 ease-in-out mb-2"
                 >
                   <div className="flex items-center justify-between ">
                     <h2 className="text-2xl header-history capitalize  font-semibold">
@@ -100,30 +105,67 @@ const History = () => {
                   >
                     <div className="mt-4 history-list">
                       <ul className="mt-4 history-list">
+                        {/* Display the number of sets */}
                         <li className="flex items-center justify-between">
-                          <p className="text-md mb-2 text-yellow-200 ">
-                            Sets :
-                          </p>
-                          <p className="font-bold">{workout.sets}</p>
+                          <p className="text-md mb-2 text-yellow-200">Sets :</p>
+                          <p className="font-bold">{workout.sets?.length}</p>
                         </li>
-                        <li className="flex items-center justify-between">
-                          <p className="text-md mb-2 text-yellow-200">Reps :</p>
-                          <p className="font-bold">{workout.reps}</p>
-                        </li>
-                        <li className="flex items-center justify-between">
-                          <p className="text-md mb-2 text-yellow-200">
-                            Weight :
-                          </p>
-                          <p className="font-bold">{workout.weight} kg</p>
-                        </li>
+
+                        {/* Map through the sets array to display each set */}
+                        {workout.sets?.map((set, index) => (
+                          <li
+                            key={index}
+                            className="flex items-center justify-between"
+                          >
+                            <p className="text-md mb-2 text-yellow-200">
+                              Set {index + 1}:
+                            </p>
+                            <p className="font-bold">
+                              Reps: {set.reps} | Weight: {set.weight} {set.unit}
+                            </p>
+                          </li>
+                        ))}
+
+                        {/* Display Time Information */}
                         <li className="flex items-center justify-between">
                           <p className="text-md mb-2 text-yellow-200">Time :</p>
-                          <p>{`${workout.time.minutes} minutes, ${workout.time.seconds} seconds`}</p>
+                          <p>{`${workout.time?.minutes || 0} minutes, ${
+                            workout.time?.seconds || 0
+                          } seconds`}</p>
                         </li>
                       </ul>
 
                       <p className="text-sm text-gray-400 italic">
-                        Notes: {workout.notes || "No notes provided."}
+                        Notes: {workout.notes || "No notes provided."} <br />
+                        <br />
+                        {workout.sets?.map((set, index) => {
+                          const weight = set.weight;
+                          const unit = set.unit;
+
+                          if (unit === "lb") {
+                            const convertedWeight = convertToKg(weight);
+                            return (
+                              <span key={index} className="ml-2 block ">
+                                Weight {index + 1}: {weight}lb -{" "}
+                                <span className="text-white">
+                                  {convertedWeight}kg
+                                </span>
+                              </span>
+                            );
+                          }
+                          if (unit === "kg") {
+                            const convertedWeightInLb = convertToLb(weight);
+                            return (
+                              <span key={index} className="ml-2 block">
+                                Weight {index + 1}: {weight}kg -{" "}
+                                <span className="text-white">
+                                  {convertedWeightInLb}lb
+                                </span>
+                              </span>
+                            );
+                          }
+                          return null;
+                        })}
                       </p>
                     </div>
                   </div>

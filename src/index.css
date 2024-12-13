@@ -59,6 +59,13 @@ body {
   font-optical-sizing: auto;
   font-style: italic;
 }
+
+.logo {
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+  font-style: italic;
+}
+
 .header-history {
   font-family: "Roboto Mono", monospace;
   font-optical-sizing: auto;
@@ -111,7 +118,7 @@ body {
   abbr:where([title]) {
     text-decoration: none !important;
     color: #f5e35c !important;
-}
+  }
 }
 .calendar-custom .react-calendar__tile {
   font-size: 1rem;
@@ -144,8 +151,8 @@ body {
   }
 }
 
-.select{
-  margin-top: .5rem !important;
+.select {
+  margin-top: 0.5rem !important;
 }
 
 .workout-form {
@@ -190,8 +197,6 @@ body {
       justify-content: center;
       height: 100vh;
       border-radius: 0;
-
-    
     }
   }
 

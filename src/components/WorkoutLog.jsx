@@ -14,15 +14,44 @@ import { doc, updateDoc } from "firebase/firestore";
 
 const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   const [exercise, setExercise] = useState("");
-  const [sets, setSets] = useState("");
-  const [reps, setReps] = useState("");
-  const [weight, setWeight] = useState("");
+  const [sets, setSets] = useState([{ reps: "", weight: "", unit: "kg" }]);
   const [notes, setNotes] = useState("");
   const [time, setTime] = useState({ minutes: "", seconds: "" });
   const [view, setView] = useState("NO");
   const navigate = useNavigate();
 
   const normalizeExerciseName = (name) => name.trim().toLowerCase();
+
+  const handleSetChange = (index, field, value) => {
+    const updatedSets = [...sets];
+    updatedSets[index][field] = value;
+    setSets(updatedSets);
+  };
+
+  const handleUnitToggle = (index) => {
+    const updatedSets = [...sets];
+    const currentSet = updatedSets[index];
+    const weightValue = parseFloat(currentSet.weight) || 0;
+
+    if (currentSet.unit === "kg") {
+      currentSet.weight = (weightValue * 2.20462).toFixed(2);
+      currentSet.unit = "lb";
+    } else {
+      currentSet.weight = (weightValue / 2.20462).toFixed(2);
+      currentSet.unit = "kg";
+    }
+
+    setSets(updatedSets);
+  };
+
+  const handleAddSet = () => {
+    setSets([...sets, { reps: "", weight: "", unit: "kg" }]);
+  };
+
+  const handleRemoveSet = (index) => {
+    const updatedSets = sets.filter((_, i) => i !== index);
+    setSets(updatedSets);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +61,6 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
       minutes: time.minutes ? parseInt(time.minutes, 10) : 0,
       seconds: time.seconds ? parseInt(time.seconds, 10) : 0,
     };
-    const normalizedReps = reps ? parseInt(reps, 10) : 0;
 
     try {
       const workoutsRef = collection(db, "workouts");
@@ -40,8 +68,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
         workoutsRef,
         where("userId", "==", userId),
         where("exercise", "==", normalizedExercise),
-        orderBy("weight", "desc"),
-        orderBy("reps", "desc"),
+        orderBy("date", "desc"),
         limit(1)
       );
 
@@ -50,12 +77,16 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
 
       if (!querySnapshot.empty) {
         const previousWorkoutDoc = querySnapshot.docs[0];
-        const { reps: prevReps, weight: prevWeight } =
-          previousWorkoutDoc.data();
+        const { sets: prevSets } = previousWorkoutDoc.data();
 
-        isPR =
-          parseFloat(weight) > prevWeight ||
-          (parseFloat(weight) === prevWeight && normalizedReps > prevReps);
+        isPR = sets.some((set, idx) => {
+          const prevSet = prevSets[idx] || {};
+          return (
+            parseFloat(set.weight) > prevSet.weight ||
+            (parseFloat(set.weight) === prevSet.weight &&
+              parseInt(set.reps, 10) > prevSet.reps)
+          );
+        });
 
         if (isPR) {
           const prevPRRef = doc(db, "workouts", previousWorkoutDoc.id);
@@ -68,9 +99,11 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
       await addDoc(workoutsRef, {
         userId,
         exercise: normalizedExercise,
-        sets: parseInt(sets, 10) || 0,
-        reps: normalizedReps,
-        weight: weight ? parseFloat(weight) : 0,
+        sets: sets.map((set) => ({
+          reps: parseInt(set.reps, 10) || 0,
+          weight: parseFloat(set.weight) || 0,
+          unit: set.unit,
+        })),
         time: normalizedTime,
         notes,
         view,
@@ -80,9 +113,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
 
       onWorkoutUpdate();
       setExercise("");
-      setSets("");
-      setReps("");
-      setWeight("");
+      setSets([{ reps: "", weight: "", unit: "kg" }]);
       setNotes("");
       setTime({ minutes: "", seconds: "" });
       setView("YES");
@@ -96,7 +127,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
     <div className="flex justify-center workout items-center flex-col mx-2">
       <form
         onSubmit={handleSubmit}
-        className="max-w-lg mx-auto  p-6  text-white space-y-6 "
+        className="max-w-lg p-2 text-white space-y-6 m-3"
       >
         <h1 className="text-3xl font-semibold text-zinc-400 text-center header">
           Log Your Workout
@@ -106,64 +137,87 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
           value={exercise}
           onChange={(e) => setExercise(e.target.value)}
           placeholder="Exercise"
-          className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
+          className="w-full p-3 rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
           required
         />
-        <div className="grid grid-cols-3 gap-4">
-          <input
-            type="number"
-            value={sets}
-            onChange={(e) => setSets(e.target.value)}
-            placeholder="Sets"
-            className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
-          />
-          <input
-            type="number"
-            value={reps}
-            onChange={(e) => setReps(e.target.value)}
-            placeholder="Reps"
-            className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
-          />
-          <input
-            type="number"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            placeholder="Weight (kg)"
-            className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-4">
+        {sets.map((set, index) => (
+          <div key={index} className="flex gap-2 items-center">
+            {/* Reps Input */}
+
+            <input
+              type="number"
+              value={set.reps}
+              onChange={(e) => handleSetChange(index, "reps", e.target.value)}
+              placeholder="Reps"
+              className="w-full p-3 rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
+            />
+
+            {/* Weight Input with Unit Toggle */}
+            <input
+              type="number"
+              value={set.weight}
+              onChange={(e) => handleSetChange(index, "weight", e.target.value)}
+              placeholder={`Weight (${set.unit})`} // Fixed syntax error here
+              className="w-full p-3 rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
+            />
+
+            <button
+              type="button"
+              onClick={() => handleUnitToggle(index)}
+              className="py-1 px-3 bg-gray-600 text-white rounded-md text-sm"
+            >
+              {set.unit === "kg" ? "To lb" : "To kg"}
+            </button>
+
+            {/* Remove Button */}
+
+            <button
+              type="button"
+              onClick={() => handleRemoveSet(index)}
+              className="py-3 px-2 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+
+        <button
+          type="button"
+          onClick={handleAddSet}
+          className="py-2 px-4 bg-green-500 hover:bg-green-600 text-white rounded-md"
+        >
+          Add Set
+        </button>
+        {/* Time Input Fields */}
+        <div className="flex gap-2 items-center">
           <input
             type="number"
             value={time.minutes}
-            onChange={(e) =>
-              setTime((prev) => ({ ...prev, minutes: e.target.value }))
-            }
+            onChange={(e) => setTime({ ...time, minutes: e.target.value })}
             placeholder="Minutes"
-            className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
+            className="w-1/2 p-3 rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
           />
           <input
             type="number"
             value={time.seconds}
-            onChange={(e) =>
-              setTime((prev) => ({ ...prev, seconds: e.target.value }))
-            }
+            onChange={(e) => setTime({ ...time, seconds: e.target.value })}
             placeholder="Seconds"
-            className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
+            className="w-1/2 p-3 rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
           />
         </div>
+
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Notes"
-          className="w-full p-3 rounded-md bg-[#474848]  border-[#797d7d] border-2 outline-none"
+          className="w-full p-3 rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
         ></textarea>
 
         <p>View on Home Page?</p>
         <select
           value={view}
           onChange={(e) => setView(e.target.value)}
-          className="w-full p-3 rounded-md bg-[#474848] select  border-[#797d7d] border-2 outline-none"
+          className="w-full p-3 select rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
           required
         >
           <option value="YES">Yes</option>

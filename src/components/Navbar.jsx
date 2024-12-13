@@ -66,7 +66,9 @@ const Navbar = ({ userId }) => {
           <div className="w-6 h-0.5 bg-zinc-300"></div>
         </div>
         <div className="lg:ml-auto text-black">
-          <img src="/assets/logo.png" alt="logo" width={40} height={40} />
+          {/* <img src="/assets/logo.png" alt="logo" width={40} height={40} />
+           */}
+          <h2 className="logo text-xl text-zinc-300 mr-2">NextPR</h2>
         </div>
       </div>
 
