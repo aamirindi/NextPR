@@ -16,17 +16,16 @@ const History = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [workouts, setWorkouts] = useState([]);
   const [expandedWorkoutId, setExpandedWorkoutId] = useState(null);
+  const [prDates, setPrDates] = useState([]); // Store dates with PR
 
   // Fetch workouts by date range (start of the day to end of the day)
   const fetchWorkoutsByDate = async (date) => {
     if (!userId) return;
 
     try {
-      // Get the start and end timestamps for the selected date (00:00:00 to 23:59:59)
       const startOfDay = new Date(date.setHours(0, 0, 0, 0));
       const endOfDay = new Date(date.setHours(23, 59, 59, 999));
 
-      // Convert to Firestore Timestamp format
       const startTimestamp = Timestamp.fromDate(startOfDay);
       const endTimestamp = Timestamp.fromDate(endOfDay);
 
@@ -50,43 +49,75 @@ const History = () => {
     }
   };
 
+  // Fetch PR dates
+  const fetchPrDates = async () => {
+    if (!userId) return;
+
+    try {
+      const workoutsRef = collection(db, "workouts");
+      const q = query(workoutsRef, where("userId", "==", userId), where("isPR", "==", true));
+      const querySnapshot = await getDocs(q);
+
+      // Map PR dates into an array of Date objects
+      const prDateData = querySnapshot.docs.map((doc) => {
+        const workout = doc.data();
+        return workout.date.toDate();
+      });
+
+      setPrDates(prDateData);
+    } catch (error) {
+      console.error("Error fetching PR dates:", error);
+    }
+  };
+
   useEffect(() => {
     fetchWorkoutsByDate(selectedDate);
+    fetchPrDates();
   }, [selectedDate, userId]);
 
   const toggleWorkoutDetails = (id) => {
     setExpandedWorkoutId((prevId) => (prevId === id ? null : id));
   };
 
-  // Function to convert lb to kg
   const convertToKg = (weightInLb) => (weightInLb * 0.453592).toFixed(2);
-  // Function to convert kg to lb
   const convertToLb = (weightInKg) => (weightInKg * 2.20462).toFixed(2);
 
+  // Check if a date is a PR date
+  const isPrDate = (date) => {
+    return prDates.some((prDate) => prDate.toDateString() === date.toDateString());
+  };
+
   return (
-    <div className=" min-h-screen text-white font-sans">
+    <div className="min-h-screen text-white font-sans">
       <Navbar userId={userId} />
       <div className="container mx-auto p-6 flex flex-col justify-center items-center">
         <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">
           {/* Calendar */}
-          <div className="p-4 rounded-xl w-full max-w-xs">
+          <div className="p-4 rounded-xl w-full max-w-xs animate">
             <Calendar
               onChange={setSelectedDate}
               value={selectedDate}
               className="rounded-lg p-2 shadow-2xl calendar-custom"
+              tileContent={({ date, view }) =>
+                view === "month" && isPrDate(date) ? (
+                  <div className="flex justify-center items-center">
+                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                  </div>
+                ) : null
+              }
             />
           </div>
 
           {/* Workout Data */}
-          <div className="lg:w-2/3 w-full">
+          <div className="lg:w-2/3 w-full animate_3">
             {workouts.length > 0 ? (
               workouts.map((workout) => (
                 <div
                   key={workout.id}
                   className="bg-[#474848] mx-2 text-white p-4 shadow-lg hover:shadow-2xl transition duration-300 ease-in-out mb-2"
                 >
-                  <div className="flex items-center justify-between ">
-                    <h2 className="text-2xl header-history capitalize  font-semibold">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl header-history capitalize font-semibold">
                       {workout.exercise}
                     </h2>
                     <button
@@ -105,13 +136,10 @@ const History = () => {
                   >
                     <div className="mt-4 history-list">
                       <ul className="mt-4 history-list">
-                        {/* Display the number of sets */}
                         <li className="flex items-center justify-between">
                           <p className="text-md mb-2 text-yellow-200">Sets :</p>
                           <p className="font-bold">{workout.sets?.length}</p>
                         </li>
-
-                        {/* Map through the sets array to display each set */}
                         {workout.sets?.map((set, index) => (
                           <li
                             key={index}
@@ -125,8 +153,6 @@ const History = () => {
                             </p>
                           </li>
                         ))}
-
-                        {/* Display Time Information */}
                         <li className="flex items-center justify-between">
                           <p className="text-md mb-2 text-yellow-200">Time :</p>
                           <p>{`${workout.time?.minutes || 0} minutes, ${
@@ -134,38 +160,8 @@ const History = () => {
                           } seconds`}</p>
                         </li>
                       </ul>
-
                       <p className="text-sm text-gray-400 italic">
-                        Notes: {workout.notes || "No notes provided."} <br />
-                        <br />
-                        {workout.sets?.map((set, index) => {
-                          const weight = set.weight;
-                          const unit = set.unit;
-
-                          if (unit === "lb") {
-                            const convertedWeight = convertToKg(weight);
-                            return (
-                              <span key={index} className="ml-2 block ">
-                                Weight {index + 1}: {weight}lb -{" "}
-                                <span className="text-white">
-                                  {convertedWeight}kg
-                                </span>
-                              </span>
-                            );
-                          }
-                          if (unit === "kg") {
-                            const convertedWeightInLb = convertToLb(weight);
-                            return (
-                              <span key={index} className="ml-2 block">
-                                Weight {index + 1}: {weight}kg -{" "}
-                                <span className="text-white">
-                                  {convertedWeightInLb}lb
-                                </span>
-                              </span>
-                            );
-                          }
-                          return null;
-                        })}
+                        Notes: {workout.notes || "No notes provided."}
                       </p>
                     </div>
                   </div>

@@ -14,7 +14,7 @@ import { doc, updateDoc } from "firebase/firestore";
 
 const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   const [exercise, setExercise] = useState("");
-  const [sets, setSets] = useState([{ reps: "", weight: "", unit: "kg" }]);
+  const [sets, setSets] = useState([{ reps: "", weight: "", unit: "lb" }]); // Default unit is now "lb"
   const [notes, setNotes] = useState("");
   const [time, setTime] = useState({ minutes: "", seconds: "" });
   const [view, setView] = useState("NO");
@@ -33,19 +33,19 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
     const currentSet = updatedSets[index];
     const weightValue = parseFloat(currentSet.weight) || 0;
 
-    if (currentSet.unit === "kg") {
-      currentSet.weight = (weightValue * 2.20462).toFixed(2);
-      currentSet.unit = "lb";
-    } else {
-      currentSet.weight = (weightValue / 2.20462).toFixed(2);
+    if (currentSet.unit === "lb") {
+      currentSet.weight = (weightValue / 2.20462).toFixed(2); // Convert lb to kg
       currentSet.unit = "kg";
+    } else {
+      currentSet.weight = (weightValue * 2.20462).toFixed(2); // Convert kg to lb
+      currentSet.unit = "lb";
     }
 
     setSets(updatedSets);
   };
 
   const handleAddSet = () => {
-    setSets([...sets, { reps: "", weight: "", unit: "kg" }]);
+    setSets([...sets, { reps: "", weight: "", unit: "lb" }]); // New sets default to "lb"
   };
 
   const handleRemoveSet = (index) => {
@@ -113,7 +113,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
 
       onWorkoutUpdate();
       setExercise("");
-      setSets([{ reps: "", weight: "", unit: "kg" }]);
+      setSets([{ reps: "", weight: "", unit: "lb" }]); // Resetting to default "lb"
       setNotes("");
       setTime({ minutes: "", seconds: "" });
       setView("YES");
@@ -124,10 +124,10 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
   };
 
   return (
-    <div className="flex justify-center workout items-center flex-col mx-2">
+    <div className="flex justify-center workout items-center flex-col mx-2 ">
       <form
         onSubmit={handleSubmit}
-        className="max-w-lg p-2 text-white space-y-6 m-3"
+        className="max-w-lg p-2 text-white space-y-6 m-3 animate_3"
       >
         <h1 className="text-3xl font-semibold text-zinc-400 text-center header">
           Log Your Workout
@@ -157,7 +157,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
               type="number"
               value={set.weight}
               onChange={(e) => handleSetChange(index, "weight", e.target.value)}
-              placeholder={`Weight (${set.unit})`} // Fixed syntax error here
+              placeholder={`Weight (${set.unit})`}
               className="w-full p-3 rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
             />
 
@@ -213,7 +213,7 @@ const WorkoutLog = ({ userId, onWorkoutUpdate }) => {
           className="w-full p-3 rounded-md bg-[#474848] border-[#797d7d] border-2 outline-none"
         ></textarea>
 
-        <p>View on Home Page?</p>
+        <p>Add to Home Page?</p>
         <select
           value={view}
           onChange={(e) => setView(e.target.value)}

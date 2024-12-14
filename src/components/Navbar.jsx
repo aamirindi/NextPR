@@ -66,7 +66,7 @@ const Navbar = ({ userId }) => {
           <div className="w-6 h-0.5 bg-zinc-300 mb-1"></div>
           <div className="w-6 h-0.5 bg-zinc-300"></div>
         </div>
-        <div className="lg:ml-auto text-black">
+        <div className="lg:ml-auto text-black ">
           {/* <img src="/assets/logo.png" alt="logo" width={40} height={40} />
            */}
           <h2 className="logo text-xl text-zinc-300 mr-2">NextPR</h2>
@@ -76,7 +76,7 @@ const Navbar = ({ userId }) => {
       {/* Sidebar */}
       <div>
         {/* For larger screens */}
-        <div className="hidden lg:flex lg:text-center lg:justify-between p-3 fixed left-0 top-0 h-full w-fit bg-[#111214] text-center text-white flex-col">
+        <div className="hidden lg:flex lg:text-center animate_3 lg:justify-between p-3 fixed left-0 top-0 h-full w-fit bg-[#111214] text-center text-white flex-col">
           <div className="flex flex-col gap-4">
             <div
               className={`cursor-pointer p-2 rounded-md transition-all duration-300 ease-in-out ${
@@ -140,7 +140,7 @@ const Navbar = ({ userId }) => {
         {/* For smaller screens */}
         <div
           ref={sidebarRef}
-          className={`lg:hidden fixed top-0 left-0 h-full w-fit bg-[#111214] flex flex-col justify-between text-white p-4 transition-transform transform ${
+          className={`lg:hidden fixed top-0 left-0  h-full w-fit bg-[#111214] flex flex-col justify-between text-white p-4 transition-transform transform ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >

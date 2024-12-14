@@ -93,9 +93,9 @@ const Profile = ({ user }) => {
   return (
     <div className=" min-h-screen text-white">
       <Navbar />
-      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-2xl text-white profile-form ">
+      <div className="flex flex-col justify-center w-fit p-4 max-w-lg rounded-2xl text-white profile-form animate_3 ">
         {/* Display Current Info */}
-        <div className="relative profile-container flex justify-between">
+        <div className="relative profile-container flex justify-between ">
           <div className="mb-4 relative profile-img-container">
             <img
               src={
