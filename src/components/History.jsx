@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Calendar } from "react-calendar";
 import {
   collection,
@@ -87,11 +87,11 @@ const History = () => {
   const convertToLb = (weightInKg) => (weightInKg * 2.20462).toFixed(2);
 
   // Check if a date is a PR date
-  const isPrDate = (date) => {
-    return prDates.some(
-      (prDate) => prDate.toDateString() === date.toDateString()
-    );
-  };
+  const isPrDate = useMemo(
+    () => (date) =>
+      prDates.some((prDate) => prDate.toDateString() === date.toDateString()),
+    [prDates]
+  );
 
   return (
     <div className="min-h-screen text-white font-sans">

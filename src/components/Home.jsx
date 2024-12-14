@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 const Home = () => {
   const userId = auth.currentUser?.uid;
   const [workouts, setWorkouts] = useState([]);
+  const [expandedWorkoutId, setExpandedWorkoutId] = useState(null);
 
   const fetchWorkouts = async () => {
     if (!userId) {
@@ -82,6 +83,10 @@ const Home = () => {
   // Function to convert kg to lb
   const convertToLb = (weightInKg) => (weightInKg * 2.20462).toFixed(2);
 
+  const toggleWorkoutDetails = (id) => {
+    setExpandedWorkoutId((prevId) => (prevId === id ? null : id));
+  };
+
   return (
     <div className=" min-h-screen text-white">
       <Navbar userId={userId} />
@@ -95,80 +100,93 @@ const Home = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pl-16 pr">
+            {/* Display each workout */}
             {workouts.map((workout) => (
               <div
                 key={workout.id}
                 className="bg-[#474848] animate_3 text-white p-3 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:scale-y-105 w-full"
               >
-                <h2 className="text-2xl capitalize header-history italic font-bold mb-4">
-                  {workout.exercise}
-                </h2>
-
-                <div className="mt-4 history-list">
-                  <ul className="mt-4 history-list">
-                    {/* Display the number of sets */}
-                    <li className="flex items-center justify-between">
-                      <p className="text-md mb-2 text-yellow-200">Sets :</p>
-                      <p className="font-bold">{workout.sets?.length}</p>
-                    </li>
-
-                    {/* Map through the sets array to display each set */}
-                    {workout.sets?.map((set, index) => (
-                      <li
-                        key={index}
-                        className="flex items-center justify-between"
-                      >
-                        <p className="text-md mb-2 text-yellow-200">
-                          Set {index + 1}:
-                        </p>
-                        <p className="font-bold">
-                          Reps: {set.reps} | Weight: {set.weight} {set.unit}
-                        </p>
-                      </li>
-                    ))}
-
-                    {/* Display Time Information */}
-                    <li className="flex items-center justify-between">
-                      <p className="text-md mb-2 text-yellow-200">Time :</p>
-                      <p>{`${workout.time?.minutes || 0} minutes, ${
-                        workout.time?.seconds || 0
-                      } seconds`}</p>
-                    </li>
-                  </ul>
-
-                  <p className="text-sm text-gray-400 italic">
-                    Notes: {workout.notes || "No notes provided."} <br />
-                    <br />
-                    {workout.sets?.map((set, index) => {
-                      const weight = set.weight;
-                      const unit = set.unit;
-
-                      if (unit === "lb") {
-                        const convertedWeight = convertToKg(weight);
-                        return (
-                          <span key={index} className="ml-2 block ">
-                            Weight {index + 1} : {weight}lb {" "}
-                            <span className="text-white">
-                              ({convertedWeight}kg)
-                            </span>
-                          </span>
-                        );
-                      }
-                      if (unit === "kg") {
-                        const convertedWeightInLb = convertToLb(weight);
-                        return (
-                          <span key={index} className="ml-2 block">
-                            Weight {index + 1} : {weight}kg {" "}
-                            <span className="text-white">
-                              ({convertedWeightInLb}lb)
-                            </span>
-                          </span>
-                        );
-                      }
-                      return null;
-                    })}
-                  </p>
+                {/* Display the exercise name and toggle button */}
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl header-history capitalize font-semibold">
+                    {workout.exercise}
+                  </h2>
+                  <button
+                    onClick={() => toggleWorkoutDetails(workout.id)}
+                    className="text-xl font-bold px-2 ml-5 rounded-full text-white focus:outline-none"
+                  >
+                    {expandedWorkoutId === workout.id ? "-" : "+"}
+                  </button>
                 </div>
+
+                {/* Conditionally render workout details */}
+                {expandedWorkoutId === workout.id && (
+                  <div className="mt-4 history-list">
+                    <ul className="mt-4 history-list">
+                      {/* Display the number of sets */}
+                      <li className="flex items-center justify-between">
+                        <p className="text-md mb-2 text-yellow-200">Sets :</p>
+                        <p className="font-bold">{workout.sets?.length}</p>
+                      </li>
+
+                      {/* Map through the sets array to display each set */}
+                      {workout.sets?.map((set, index) => (
+                        <li
+                          key={index}
+                          className="flex items-center justify-between"
+                        >
+                          <p className="text-md mb-2 text-yellow-200">
+                            Set {index + 1}:
+                          </p>
+                          <p className="font-bold">
+                            Reps: {set.reps} | Weight: {set.weight} {set.unit}
+                          </p>
+                        </li>
+                      ))}
+
+                      {/* Display Time Information */}
+                      <li className="flex items-center justify-between">
+                        <p className="text-md mb-2 text-yellow-200">Time :</p>
+                        <p>{`${workout.time?.minutes || 0} minutes, ${
+                          workout.time?.seconds || 0
+                        } seconds`}</p>
+                      </li>
+                    </ul>
+
+                    <p className="text-sm text-gray-400 italic">
+                      Notes: {workout.notes || "No notes provided."} <br />
+                      <br />
+                      {workout.sets?.map((set, index) => {
+                        const weight = set.weight;
+                        const unit = set.unit;
+
+                        if (unit === "lb") {
+                          const convertedWeight = convertToKg(weight);
+                          return (
+                            <span key={index} className="ml-2 block ">
+                              Weight {index + 1} : {weight}lb{" "}
+                              <span className="text-white">
+                                ({convertedWeight}kg)
+                              </span>
+                            </span>
+                          );
+                        }
+                        if (unit === "kg") {
+                          const convertedWeightInLb = convertToLb(weight);
+                          return (
+                            <span key={index} className="ml-2 block">
+                              Weight {index + 1} : {weight}kg{" "}
+                              <span className="text-white">
+                                ({convertedWeightInLb}lb)
+                              </span>
+                            </span>
+                          );
+                        }
+                        return null;
+                      })}
+                    </p>
+                  </div>
+                )}
 
                 <p className="text-gray-400 text-sm mt-2">
                   {new Date(workout.date.seconds * 1000).toLocaleDateString()}
