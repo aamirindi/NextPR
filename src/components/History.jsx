@@ -55,7 +55,11 @@ const History = () => {
 
     try {
       const workoutsRef = collection(db, "workouts");
-      const q = query(workoutsRef, where("userId", "==", userId), where("isPR", "==", true));
+      const q = query(
+        workoutsRef,
+        where("userId", "==", userId),
+        where("isPR", "==", true)
+      );
       const querySnapshot = await getDocs(q);
 
       // Map PR dates into an array of Date objects
@@ -84,7 +88,9 @@ const History = () => {
 
   // Check if a date is a PR date
   const isPrDate = (date) => {
-    return prDates.some((prDate) => prDate.toDateString() === date.toDateString());
+    return prDates.some(
+      (prDate) => prDate.toDateString() === date.toDateString()
+    );
   };
 
   return (
@@ -160,8 +166,38 @@ const History = () => {
                           } seconds`}</p>
                         </li>
                       </ul>
+
                       <p className="text-sm text-gray-400 italic">
-                        Notes: {workout.notes || "No notes provided."}
+                        Notes: {workout.notes || "No notes provided."} <br />
+                        <br />
+                        {workout.sets?.map((set, index) => {
+                          const weight = set.weight;
+                          const unit = set.unit;
+
+                          if (unit === "lb") {
+                            const convertedWeight = convertToKg(weight);
+                            return (
+                              <span key={index} className="ml-2 block ">
+                                Weight {index + 1} : {weight}lb{" "}
+                                <span className="text-white">
+                                  ({convertedWeight}kg)
+                                </span>
+                              </span>
+                            );
+                          }
+                          if (unit === "kg") {
+                            const convertedWeightInLb = convertToLb(weight);
+                            return (
+                              <span key={index} className="ml-2 block">
+                                Weight {index + 1} : {weight}kg{" "}
+                                <span className="text-white">
+                                  ({convertedWeightInLb}lb)
+                                </span>
+                              </span>
+                            );
+                          }
+                          return null;
+                        })}
                       </p>
                     </div>
                   </div>
